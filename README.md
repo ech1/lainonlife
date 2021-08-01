@@ -2,6 +2,7 @@
 ===============
 
 Online radio for lainons. Forked from [lainon.life](lainon.life) by [barrucadu](https://github.com/barrucadu/lainonlife) because i run it on a debian VM.
+If you want to set it up on a debian10 VM you can follow this [tutorial](https://blog.void.yt/servers/lainradio/index.html).
 
 Assumptions
 -----------
@@ -29,7 +30,7 @@ configuration (sans passwords) [is on github][nixfiles].
 
 The `examples/` directory contains sample configuration for [nginx][], [Icecast][], [MPD][], [Crontab][], and [Systemd][].
 
-For those that use debian 10 to host lainonlife, you can follow this [tutorial](https://blog.void.yt/servers/lainradio/index.html).
+For those that use debian 10 to host lainonlife, 
 
 Usage
 -----
