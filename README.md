@@ -74,10 +74,6 @@ There are 3 essential scripts for development:
 
 You can run these scripts like so: `pipenv run build`
 
-I want to help!
----------------
-
-Great!  See the open issues.  You can also find me on irc.lainchan.org.
 
 
 [Icecast]:     http://icecast.org/
