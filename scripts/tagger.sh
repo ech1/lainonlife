@@ -90,7 +90,7 @@ then
                                 id3tag  --album="Lainchan Radio Transitions" $SONG
                                 id3tag  --song=\"$SONG\" $SONG
                         else
-                                if [ $ALBUM == "DUMP" ];
+                                if [ $ALBUM == "DUMP" ]; #directory to dump all the tracks into, each song is it's own album in there basically.
                                 then
                                         id3tag  --album=\"$SONG\" $SONG
                                         id3tag  --song=\"$SONG\" $SONG
