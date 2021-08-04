@@ -1,9 +1,12 @@
-#!/bin/bash
+#! /bin/bash
 
-# DISCLAIMER IF YOU WANT TO USE THIS SCRIPT:
+#DISCLAIMER IF YOU WANT TO USE THIS SCRIPT:
+#PLACE IT IN /srv/radio/music
+# INTO THIS FOLDER THERE MUST BE YOUR CHANNEL FOLDERS
 #
 # /srv/radio/music/channel/album/songs.mp3
-# ^ THIS IS THE REQUIRED DIRECTORY TREE TO USE IT
+#
+# ^ THIS IS THE REQUIRED DIRECTORY TREE
 #
 # this script will help you TAG the songs.mp3 with the ALBUM album directory they are in, as well as tag their TITLE with their FILENAME.
 #
@@ -14,8 +17,6 @@ RED="\033[0;31m"
 NC="\033[0m"
 
 echo -en "${GREEN}[+]${NC} Type the name of the channel directory (ex: cyberia): "
-#just in case someone tries to run it in the wrong place
-cd /srv/radio/music/
 read channel
 
 
@@ -30,15 +31,27 @@ ALBUMS="*"
 cd $channel
 for ALBUM in $ALBUMS ;
 do
-                echo -en "\n ${ORANGE}[+] $ALBUM${NC}"
-                cd $ALBUM
-                SONGS="*"
-                for SONG in $SONGS;
-                do
-                        echo -en "\n ${GREEN} [+] $SONG${NC}"
-                done
-                cd ..
+        echo -en "\n ${ORANGE}[+] $ALBUM${NC}"
+        cd $ALBUM
+        SONGS="*"
+        for SONG in $SONGS ;
+        do
+                echo -en "\n ${GREEN} [+] $SONG${NC}"
+                if [ $ALBUM == "transitions" ];
+                then
+                        echo "Lainchan Radio Transitions - $SONG"
+                else
+                        if [ $ALBUM == "DUMP" ];
+                        then
+                                echo "$SONG - $SONG"
+                        else
+                                echo "$ALBUM - $SONG"
+                        fi
+                fi
+        done
+        cd ..
 done
+
 cd ..
 
 #restore IFS
@@ -75,10 +88,16 @@ then
                         if [ $ALBUM == "transitions" ];
                         then
                                 id3tag  --album="Lainchan Radio Transitions" $SONG
-                                id3tag  --song="\"$SONG\"" $SONG
+                                id3tag  --song=\"$SONG\" $SONG
                         else
-                                id3tag  --album="\"$ALBUM\"" $SONG
-                                id3tag  --song="\"$SONG\"" $SONG
+                                if [ $ALBUM == "DUMP" ];
+                                then
+                                        id3tag  --album=\"$SONG\" $SONG
+                                        id3tag  --song=\"$SONG\" $SONG
+                                else
+                                        id3tag  --album=\"$ALBUM\" $SONG
+                                        id3tag  --song=\"$SONG\" $SONG
+                                fi
                         fi
                 done
                 cd ..
@@ -88,7 +107,7 @@ then
         IFS=$SAVEIFS
 
 else
-        echo 'cancelling....'
+        echo -en "\n${RED}[+] Cancelling... ${NC}"
 fi
 
 
