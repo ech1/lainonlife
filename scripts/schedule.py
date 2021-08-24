@@ -56,17 +56,22 @@ def pick_album(client, dur):
     """Picks a random album which fits in the duration."""
 
     # Get all albums
-    all_albums = [
-        a["album"]
-        for a in client.list("album")
-        if "album" in a and a["album"] not in ["", "Lainchan Radio Transitions"]
-    ]
 
+    for a in client.list("album"):
+        print(a)
+
+    #all_albums = [
+    #    a["album"]
+    #    for a in client.list("album")
+    #    if "album" in a and a["album"] not in ["", "Lainchan Radio Transitions"]
+    #]
+
+    all_albums = []
     for a in client.list("album"):
         print(a)
         all_albums.append(a)
 
-    print(all_albums)
+    #print(all_albums)
     shuffle(all_albums)
 
     album = all_albums[0]
@@ -111,8 +116,7 @@ def pick_tracks(client, chosen_album, dur):
     return chosen, dur - remaining
 
 
-#def schedule_radio(client, target_dur= 12 * 60 * 60): #in case you have albums with gigantic tracks
-def schedule_radio(client, target_dur= 3 * 60 * 60):
+def schedule_radio(client, target_dur= 12 * 60 * 60):
     """Schedule music.
 
     Keyword arguments:
