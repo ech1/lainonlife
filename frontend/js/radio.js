@@ -203,6 +203,7 @@ window.onload = () => {
     // Get the initial playlist and set a timer to regularly update it.
     check_playlist();
     playlistPoll = setInterval(check_playlist, 15000);
+    LainPlayer.togglePlay()
 
     document.addEventListener('keyup', (e) => {
         if(e.keyCode == 32){
