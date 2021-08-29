@@ -73,7 +73,9 @@ const ICECAST_STATUS_URL = "{{ icecast_status_url }}";
       </div>
     </div>
   </div>
-
+  
+<hr/>
+  <center><h1>Press <b>Spacebar</b> to toggle play on / off</h1></center>
   <hr/>
 
   <div class="withscript">
