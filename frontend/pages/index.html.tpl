@@ -84,9 +84,9 @@ const ICECAST_STATUS_URL = "{{ icecast_status_url }}";
     </table>
   </div>
 
-  <div class="alert noscript">
+  <!--<div class="alert noscript">
      <h1>Press <b>Spacebar</b> to toggle play on / off</h1>
-  </div>
+  </div>-->
 </div>
 
 <footer>
