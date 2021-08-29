@@ -334,16 +334,16 @@ window.onload = () => {
     //goto next channel
     document.addEventListener('keyup', (e) => {
         if(e.keyCode == 38){
-            //uparrow to go to prev channel (upward)
-            prev_channel()
+            //uparrow to go to next channel (upward)
+            next_channel()
         }
     });
 
     //goto previous channel
     document.addEventListener('keyup', (e) => {
         if(e.keyCode == 40){
-            //downarrow to go to next channek (downward)
-            next_channel()
+            //downarrow to go to prev channel (downward)
+            prev_channel()
         }
     });
 
