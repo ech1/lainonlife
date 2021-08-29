@@ -1,7 +1,7 @@
 const LainPlayer = ((STREAM_URL_BASE) => {
     const audioContext = new window.AudioContext();
     const audioTag = document.getElementById("audio");
-    audioTag.volume = 0.51;
+    audioTag.volume = 0.15;
     let updateInterval;
 
     function changeSource(source) {
@@ -55,7 +55,7 @@ const LainPlayer = ((STREAM_URL_BASE) => {
             volumebtn.classList.remove('fa-volume-up');
             volumebtn.classList.remove('fa-volume-down');
             volumebtn.classList.add('fa-volume-off');
-        } else if (audioTag.volume > 0.51) {
+        } else if (audioTag.volume > 0.15) {
             volumebtn.classList.remove('fa-volume-down');
             volumebtn.classList.remove('fa-volume-off');
             volumebtn.classList.add('fa-volume-up');
@@ -67,8 +67,8 @@ const LainPlayer = ((STREAM_URL_BASE) => {
     }
 
     function cycleVolume() {
-        if (audioTag.volume < 0.51) {
-            audioTag.volume = 0.51;
+        if (audioTag.volume < 0.15) {
+            audioTag.volume = 0.15;
         } else if (audioTag.volume < 1) {
             audioTag.volume = 1;
         } else {
