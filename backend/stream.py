@@ -49,7 +49,7 @@ def start_stream_monitor(channelsjson, prometheus):
 # MPD
 
 
-def get_playlist_info(client, beforeNum=5, afterNum=5):
+def get_playlist_info(client, beforeNum=5, afterNum=15):
     status = client.status()
     if status["state"] != "play":
         print(f"MPD is not playing (state '{status['state']}') - starting")
