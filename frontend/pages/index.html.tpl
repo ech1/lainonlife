@@ -83,9 +83,7 @@ const ICECAST_STATUS_URL = "{{ icecast_status_url }}";
   </div>
 
   <div class="alert noscript">
-    <p>Enable Javascript for the channel features to work.</p>
-
-    <p class="plain">Or don't, I'm not your mom.</p>
+     <h1>Press <b>Spacebar</b> to toggle play on / off</h1>
   </div>
 </div>
 
