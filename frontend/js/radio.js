@@ -24,7 +24,8 @@ function populate_channel_list() {
     ajax_with_json(ICECAST_STATUS_URL, function(response) {
         // Get the list of channels, the default.
         let channels = [];
-//      console.log(channels);
+        //console.log(channels);
+
         for(let id in response.icestats.source) {
             let source = response.icestats.source[id];
             let sname = source.server_name;
@@ -32,10 +33,10 @@ function populate_channel_list() {
                 channels.push(sname.substr(6, sname.length-12));
             }
         }
-        //console.log(channels);
 
         // Sort them.
         channels.sort();
+        console.log(channels);
 
         // Add to the selector drop-down.
         let dropdown = document.getElementById("channel");
@@ -180,6 +181,125 @@ function change_channel(e) {
     playlistPoll = setInterval(check_playlist, 15000);
 }
 
+
+function change_channel2(e) {
+    channel = e;
+    LainPlayer.changeChannel(channel);
+
+    // Update the stream links.
+    document.getElementById("mp3link").href = `${ICECAST_STREAM_URL_BASE}/${channel}.mp3`;
+
+    // Update the file list link.
+    document.getElementById("fileslink").href = "/file-list/" + channel + ".html";
+
+    // clear the running Intervals
+    // this is needed for the smooth progressbar update to be in sync
+    clearInterval(statusPoll);
+    clearInterval(playlistPoll);
+
+    // Update the playlist and reset the Intervals
+    check_playlist();
+    playlistPoll = setInterval(check_playlist, 15000);
+}
+
+function next_channel(){
+    ajax_with_json(ICECAST_STATUS_URL, function(response) {
+        let channels = [];
+        //console.log(channels);
+
+        for(let id in response.icestats.source) {
+            let source = response.icestats.source[id];
+            let sname = source.server_name;
+            if(sname !== undefined && sname.startsWith("[mpd] ") && sname.endsWith(" (mp3)")) {
+                channels.push(sname.substr(6, sname.length-12));
+            }
+        }
+
+        // Sort them.
+        channels.sort();
+        //console.log(channels);
+
+        //get the CURRENT channel
+        let iceresponse = response.icestats.source;
+        let currentchannel= `${channel}`;
+        console.log(currentchannel);
+
+        // find the current channel index in the array
+        for(index in channels){
+                //console.log(channels[index])
+                if(currentchannel == channels[index]){
+                        let currentindex = index;
+                        //console.log(currentindex)
+                        //console.log(channels[currentindex])
+
+                        let next = parseInt(currentindex, 10)-1;
+                        //console.log(channels)
+                        console.log(next)
+                        //console.log(channels.length-1)
+                        if(next<0){
+                                next=channels.length-1;
+                        }
+
+                        //console.log(next)
+                        //console.log(channels[next])
+                        change_channel2(channels[next])
+
+                }
+        }
+
+    });
+}
+
+
+
+function prev_channel(){
+    ajax_with_json(ICECAST_STATUS_URL, function(response) {
+        let channels = [];
+        //console.log(channels);
+
+        for(let id in response.icestats.source) {
+            let source = response.icestats.source[id];
+            let sname = source.server_name;
+            if(sname !== undefined && sname.startsWith("[mpd] ") && sname.endsWith(" (mp3)")) {
+                channels.push(sname.substr(6, sname.length-12));
+            }
+        }
+
+        // Sort them.
+        channels.sort();
+        //console.log(channels);
+
+        //get the CURRENT channel
+        let iceresponse = response.icestats.source;
+        let currentchannel= `${channel}`;
+        console.log(currentchannel);
+
+        // find the current channel index in the array
+        for(index in channels){
+                //console.log(channels[index])
+                if(currentchannel == channels[index]){
+                        let currentindex = index;
+                        //console.log(currentindex)
+                        //console.log(channels[currentindex])
+
+                        let next = parseInt(currentindex, 10)+1;
+                        //console.log(channels)
+                        console.log(next)
+                        //console.log(channels.length-1)
+                        if(next>channels.length-1){
+                                next=0;
+                        }
+
+                        //console.log(next)
+                        //console.log(channels[next])
+                        change_channel2(channels[next])
+
+                }
+        }
+
+    });
+}
+
 window.onload = () => {
     // Show and hide things
     let show = document.getElementsByClassName("withscript");
@@ -210,4 +330,21 @@ window.onload = () => {
             LainPlayer.togglePlay()
         }
     });
+
+    //goto next channel
+    document.addEventListener('keyup', (e) => {
+        if(e.keyCode == 38){
+            //uparrow to go to prev channel (upward)
+            prev_channel()
+        }
+    });
+
+    //goto previous channel
+    document.addEventListener('keyup', (e) => {
+        if(e.keyCode == 40){
+            //downarrow to go to next channek (downward)
+            next_channel()
+        }
+    });
+
 };
