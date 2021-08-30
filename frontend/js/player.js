@@ -1,7 +1,7 @@
 const LainPlayer = ((STREAM_URL_BASE) => {
     const audioContext = new window.AudioContext();
     const audioTag = document.getElementById("audio");
-    audioTag.volume = 0.15;
+    audioTag.volume = 0.10;
     let updateInterval;
 
     function changeSource(source) {
@@ -47,6 +47,11 @@ const LainPlayer = ((STREAM_URL_BASE) => {
         audioTag.currentTime = 0;
         updatePlayButton();
     }
+
+    function updateVolume(v){
+        audioTag.volume = v;
+    }
+
 
     function updateVolumeButton() {
         // Updates the volume button icon accoring to the volume
