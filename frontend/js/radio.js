@@ -5,6 +5,12 @@ let channel = DEFAULT_CHANNEL;
 let playlistPoll;
 let statusPoll;
 
+//initial volume
+let currentVolume = parseInt("10",10);
+
+const audioContext = new window.AudioContext();
+const audioTag = document.getElementById("audio");
+
 function ajax_with_json(url, func) {
     let httpRequest = new XMLHttpRequest();
     httpRequest.onreadystatechange = function() {
@@ -162,6 +168,8 @@ function check_playlist() {
 }
 
 function change_channel(e) {
+    //console.log(e)
+    //console.log(e.value)
     channel = e.value;
     LainPlayer.changeChannel(channel);
 
@@ -183,6 +191,17 @@ function change_channel(e) {
 
 
 function change_channel2(e) {
+    //get the dropdown list of items of channels
+    var list = document.getElementsByTagName('option');
+    for(var i = 0; i < list.length; ++i){
+        //alert(list.options[i].value);
+        if(list[i].value == e){
+                list[i].selected = true;
+                break;
+        }
+    }
+
+    //ususal channel switching:
     channel = e;
     LainPlayer.changeChannel(channel);
 
@@ -200,6 +219,8 @@ function change_channel2(e) {
     // Update the playlist and reset the Intervals
     check_playlist();
     playlistPoll = setInterval(check_playlist, 15000);
+
+
 }
 
 function next_channel(){
@@ -222,7 +243,6 @@ function next_channel(){
         //get the CURRENT channel
         let iceresponse = response.icestats.source;
         let currentchannel= `${channel}`;
-        console.log(currentchannel);
 
         // find the current channel index in the array
         for(index in channels){
@@ -234,14 +254,16 @@ function next_channel(){
 
                         let next = parseInt(currentindex, 10)-1;
                         //console.log(channels)
-                        console.log(next)
                         //console.log(channels.length-1)
                         if(next<0){
                                 next=channels.length-1;
                         }
+                        console.log(channels[next])
+                        console.log(next)
 
                         //console.log(next)
                         //console.log(channels[next])
+                        //change_channel2(channels[next])
                         change_channel2(channels[next])
 
                 }
@@ -272,7 +294,6 @@ function prev_channel(){
         //get the CURRENT channel
         let iceresponse = response.icestats.source;
         let currentchannel= `${channel}`;
-        console.log(currentchannel);
 
         // find the current channel index in the array
         for(index in channels){
@@ -284,14 +305,16 @@ function prev_channel(){
 
                         let next = parseInt(currentindex, 10)+1;
                         //console.log(channels)
-                        console.log(next)
                         //console.log(channels.length-1)
                         if(next>channels.length-1){
                                 next=0;
                         }
+                        console.log(channels[next])
+                        console.log(next)
 
                         //console.log(next)
                         //console.log(channels[next])
+                        //change_channel2(channels[next])
                         change_channel2(channels[next])
 
                 }
@@ -300,6 +323,31 @@ function prev_channel(){
     });
 }
 
+function volumeUp() {
+  if (currentVolume < 100) {
+      currentVolume = currentVolume + 10;
+      soundVolume = currentVolume / 100;
+      //var $toastContent = $('<span>Volume '+ currentVolume+ ' %' + '</span>' );
+      //Materialize.toast($toastContent, 2000);
+      console.log(soundVolume);
+      document.getElementById("volume").innerHTML = currentVolume;
+      //LainPlayer.updateVolume(soundVolume);
+      audioTag.volume = soundVolume;
+  }
+}
+
+function volumeDown() {
+  if (currentVolume > 0) {
+      currentVolume = currentVolume - 10;
+      soundVolume = currentVolume / 100;
+      //var $toastContent = $('<span>Volume '+ currentVolume+ ' %' + '</span>' );
+      //Materialize.toast($toastContent, 2000);
+      console.log(soundVolume);
+      document.getElementById("volume").innerHTML = currentVolume;
+      //LainPlayer.updateVolume(soundVolume);
+      audioTag.volume = soundVolume;
+  }
+}
 window.onload = () => {
     // Show and hide things
     let show = document.getElementsByClassName("withscript");
@@ -333,18 +381,34 @@ window.onload = () => {
 
     //goto next channel
     document.addEventListener('keyup', (e) => {
-        if(e.keyCode == 38){
-            //uparrow to go to next channel (upward)
+        if(e.keyCode == 37){
+            //rightarrow to go to next channel (upward)
             next_channel()
         }
     });
 
     //goto previous channel
     document.addEventListener('keyup', (e) => {
-        if(e.keyCode == 40){
-            //downarrow to go to prev channel (downward)
+        if(e.keyCode == 39){
+            //leftarrow to go to prev channel (downward)
             prev_channel()
         }
     });
+
+        //uparrow sound up
+    document.addEventListener('keyup', (e) => {
+        if(e.keyCode == 38){
+            //uparrow to upvolume
+            volumeUp()
+        }
+    });
+        //downarrow sound down
+    document.addEventListener('keyup', (e) => {
+        if(e.keyCode == 40){
+            //downarrow to downvolume
+            volumeDown()
+        }
+    });
+
 
 };
